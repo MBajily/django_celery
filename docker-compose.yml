@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  redis:
+    image: redis:7.0.11-alpine
+
+  django:
+    container_name: django
+    build:
+      context: ./dcelery
+    command: python manage.py runserver  0.0.0.0:8000
+    volumes:
+      - ./dcelery:/usr/src/app/ #Where we will upload our Django project
+    ports:
+      - 8001:8000 #Set port 8001 on my local machine to I can access to my container from my local machine from browser (8000 it is the caontainer port)
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=532N53JN5K3JB52K3JB56L4203
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      - redis
